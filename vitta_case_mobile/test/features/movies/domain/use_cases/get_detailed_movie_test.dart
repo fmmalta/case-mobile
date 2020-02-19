@@ -19,6 +19,7 @@ void main() {
   final tMovieID = 'tt0372784';
   final tDetailedMovie = MovieDetailed(
       title: 'Batman Begins',
+      director: 'Maltinha',
       description:
           'After training with his mentor, Batman begins his fight to free crime-ridden Gotham City from corruption.',
       moviePoster:

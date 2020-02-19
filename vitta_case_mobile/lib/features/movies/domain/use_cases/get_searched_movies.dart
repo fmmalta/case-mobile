@@ -6,13 +6,14 @@ import 'package:vitta_case_mobile/core/use_cases/use_cases.dart';
 import 'package:vitta_case_mobile/features/movies/domain/entities/movie_object.dart';
 import 'package:vitta_case_mobile/features/movies/domain/repositories/movies_repository.dart';
 
-class GetAllMovies implements SearchedMovieUseCase<Movie, SearchMovieParams> {
-  GetAllMovies(this.repository);
+class GetSearchedMovies
+    implements SearchedMovieUseCase<List<Movie>, SearchMovieParams> {
+  GetSearchedMovies(this.repository);
 
   final MoviesRepository repository;
 
   @override
-  Future<Either<Failure, Movie>> call(SearchMovieParams params) async {
+  Future<Either<Failure, List<Movie>>> call(SearchMovieParams params) async {
     return await repository.searchedMovie(params.query);
   }
 }

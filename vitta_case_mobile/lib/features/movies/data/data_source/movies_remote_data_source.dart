@@ -6,12 +6,11 @@ import 'package:vitta_case_mobile/core/error/exceptions.dart';
 import 'package:vitta_case_mobile/features/movies/data/model/movie_detailed_model.dart';
 import 'package:vitta_case_mobile/features/movies/data/model/movie_model.dart';
 import 'package:vitta_case_mobile/features/movies/domain/entities/movie_object.dart';
-import 'package:vitta_case_mobile/features/movies/domain/entities/movie_object_detailed.dart';
 
 abstract class MoviesRemoteDataSource {
-  Future<Movie> searchedMovie(String query);
+  Future<List<Movie>> searchedMovie(String query);
 
-  Future<MovieDetailed> getDetailedMovie(String movieID);
+  Future<MovieDetailedModel> getDetailedMovie(String movieID);
 }
 
 class MovieRemoteDataSourceImpl implements MoviesRemoteDataSource {
@@ -20,7 +19,7 @@ class MovieRemoteDataSourceImpl implements MoviesRemoteDataSource {
   final http.Client client;
 
   @override
-  Future<Movie> searchedMovie(String query) async {
+  Future<List<Movie>> searchedMovie(String query) async {
     final Map<String, String> _headers = <String, String>{
       'Content-Type': 'application/json',
     };
@@ -29,16 +28,21 @@ class MovieRemoteDataSourceImpl implements MoviesRemoteDataSource {
         headers: _headers);
 
     final result = json.decode(response.body);
-    if (response.statusCode == 200 && result['Response']) {
+    print('JSON Result: $result');
+    if (response.statusCode == 200 && result['Response'] == 'True') {
       print('Response: ${result['Response']}');
-      return MovieModel.fromJson(result);
+      final moviesFound = result['Search'];
+      final List<Movie> _movies = <Movie>[];
+      for (dynamic movie in moviesFound)
+        _movies.add(MovieModel.fromJson(movie));
+      return _movies;
     } else {
       throw ServerException();
     }
   }
 
   @override
-  Future<MovieDetailed> getDetailedMovie(String movieID) async {
+  Future<MovieDetailedModel> getDetailedMovie(String movieID) async {
     final Map<String, String> _headers = <String, String>{
       'Content-Type': 'application/json',
     };
@@ -46,8 +50,8 @@ class MovieRemoteDataSourceImpl implements MoviesRemoteDataSource {
         'http://www.omdbapi.com/?apikey=d12b4be8&i=$movieID',
         headers: _headers);
     final result = json.decode(response.body);
-
-    if (response.statusCode == 200 && result['Response']) {
+    print(result);
+    if (response.statusCode == 200 && result['Response'] == 'True') {
       return MovieDetailedModel.fromJson(result);
     } else {
       throw ServerException();
