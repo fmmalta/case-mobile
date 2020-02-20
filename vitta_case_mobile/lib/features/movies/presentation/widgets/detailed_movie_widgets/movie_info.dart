@@ -3,6 +3,7 @@ import 'package:vitta_case_mobile/core/styles/styles.dart';
 import 'package:vitta_case_mobile/core/widgets/general_widgets.dart';
 import 'package:vitta_case_mobile/core/widgets/responsiveness.dart';
 import 'package:vitta_case_mobile/features/movies/data/model/movie_detailed_model.dart';
+import 'package:vitta_case_mobile/features/movies/presentation/bloc/bloc.dart';
 import 'package:vitta_case_mobile/features/movies/presentation/bloc/detailed_movie_bloc/detailed_movie_bloc.dart';
 
 class MovieInfo extends StatelessWidget {
@@ -21,10 +22,21 @@ class MovieInfo extends StatelessWidget {
       child: StreamBuilder<MovieDetailedModel>(
         stream: _bloc.movieDetailed.stream,
         builder: (_, AsyncSnapshot<MovieDetailedModel> snapshot) {
-          return DefaultAnimatedSwitcher(
-              child: !snapshot.hasData
-                  ? Container()
-                  : MovieInfoBuilt(snapshot: snapshot));
+          return StreamBuilder<LoadingStatus>(
+            stream: _bloc.loadingStatus.stream,
+            builder: (_, AsyncSnapshot<LoadingStatus> loadShot) {
+              return DefaultAnimatedSwitcher(
+                child: loadShot.data == LoadingStatus.LOADING
+                    ? CircularProgressIndicator()
+                    : loadShot.data == LoadingStatus.ERROR
+                        ? Text('Tivemos um problema...')
+                        : DefaultAnimatedSwitcher(
+                            child: !snapshot.hasData
+                                ? Container()
+                                : MovieInfoBuilt(snapshot: snapshot)),
+              );
+            },
+          );
         },
       ),
     );
