@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vitta_case_mobile/core/widgets/responsiveness.dart';
 import 'package:vitta_case_mobile/features/movies/presentation/bloc/bloc.dart';
 import 'package:vitta_case_mobile/features/movies/presentation/widgets/home_page_widgets/search_text_field.dart';
 import 'package:vitta_case_mobile/features/movies/presentation/widgets/home_page_widgets/searched_movies_result.dart';
@@ -23,13 +24,19 @@ class _HomePageState extends State<HomePage> {
     return BlocProvider(
       blocBuilder: () => _bloc,
       blocDispose: (_) => _bloc?.dispose(),
-      child: Scaffold(
-        appBar: AppBar(title: Text('Filmes')),
-        body: Column(
-          children: <Widget>[
-            SearchTextField(bloc: _bloc),
-            SearchedMoviesResult(bloc: _bloc)
-          ],
+      child: GestureDetector(
+        onTap: () {
+          hideKeyboard();
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
+          appBar: AppBar(title: Text('Filmes')),
+          body: Column(
+            children: <Widget>[
+              SearchTextField(bloc: _bloc),
+              SearchedMoviesResult(bloc: _bloc)
+            ],
+          ),
         ),
       ),
     );

@@ -4,7 +4,6 @@ import 'package:vitta_case_mobile/core/widgets/general_widgets.dart';
 import 'package:vitta_case_mobile/core/widgets/responsiveness.dart';
 import 'package:vitta_case_mobile/features/movies/data/model/movie_detailed_model.dart';
 import 'package:vitta_case_mobile/features/movies/presentation/bloc/detailed_movie_bloc/detailed_movie_bloc.dart';
-import 'package:vitta_case_mobile/features/movies/presentation/pages/detailed_movie/detailed_movie_page.dart';
 
 class MovieInfo extends StatelessWidget {
   const MovieInfo({Key key, @required DetailedMovieBloc bloc})
@@ -50,21 +49,6 @@ class MovieInfoBuilt extends StatelessWidget {
         Text(snapshot.data.description,
             textAlign: TextAlign.justify, style: defaultWhiteStyle),
       ],
-    );
-  }
-}
-
-class MovieCoverPoster extends StatelessWidget {
-  const MovieCoverPoster({Key key, @required this.widget}) : super(key: key);
-
-  final DetailedMoviePage widget;
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.network(
-      widget.detailedMovieParams.baseImage,
-      height: deviceSize(context).height,
-      fit: BoxFit.cover,
     );
   }
 }

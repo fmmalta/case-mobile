@@ -27,7 +27,7 @@ class MoviesRepositoryImpl implements MoviesRepository {
       return Right(searchedMovies);
     } on ServerException {
       print('Movie not found');
-      return null;
+      return Left(ServerFail());
     }
   }
 }

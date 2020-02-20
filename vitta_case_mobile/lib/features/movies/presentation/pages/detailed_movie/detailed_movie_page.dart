@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vitta_case_mobile/features/movies/presentation/bloc/bloc.dart';
-import 'package:vitta_case_mobile/features/movies/presentation/widgets/detailed_movie_widgets/detailed_movie_widgets.dart';
+import 'package:vitta_case_mobile/features/movies/presentation/widgets/detailed_movie_widgets/movie_info.dart';
+import 'package:vitta_case_mobile/features/movies/presentation/widgets/detailed_movie_widgets/movie_poster.dart';
 
 class DetailedMoviePage extends StatefulWidget {
   const DetailedMoviePage({Key key, this.detailedMovieParams})
